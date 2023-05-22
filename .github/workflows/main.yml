@@ -27,15 +27,23 @@ jobs:
           
     - name: Build Package Helm
       run: |
-        cat boundary/Chart.yaml
-        cat boundary/values.yaml
-        helm package boundary
-        mkdir charts
-        mv *tgz charts/
-        ls -la charts/
+        mkdir .deploy
+        helm package boundary --destination .deploy
+        ls -la .deploy/
         CHART=`ls charts`
         echo "chart=$CHART" >> $GITHUB_ENV
 
+    - name: Update Helm repo index
+      run: |
+        helm repo index .deploy --url https://vertigobr.github.io/charts/
+        ls -la .deploy/
+        cat .deploy/index.yaml
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.0
+      with:
+        branch: gh-pages
+        folder: .deploy        
     # - name: Publish Helm Charts
     #   uses: dmnemec/copy_file_to_another_repo_action@main
     #   env:
