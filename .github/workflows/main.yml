@@ -30,7 +30,7 @@ jobs:
         mkdir .deploy
         helm package boundary --destination .deploy
         ls -la .deploy/
-        CHART=`ls charts`
+        CHART=`ls .deploy`
         echo "chart=$CHART" >> $GITHUB_ENV
 
     - name: Update Helm repo index
