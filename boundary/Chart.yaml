@@ -1,0 +1,23 @@
+apiVersion: v2
+name: boundary
+description: Hashicorp Boundary Helm chart
+
+type: application
+
+# This is the chart version.
+version: 0.1.0
+
+# Tip: use Boundary version
+appVersion: "0.12.2"
+
+keywords:
+  - Hashicorp
+  - Boundary
+home: https://boundaryproject.io
+sources:
+  - https://github.com/hashicorp/boundary
+  - https://github.com/vertigobr/boundary-chart
+maintainers:
+  - name: Andre Fernandes
+    email: andre@vertigo.com.br
+    url: https://vertigo.com.br
