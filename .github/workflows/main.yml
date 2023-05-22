@@ -1,0 +1,51 @@
+name: Publish Boundary Helm Chart
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Pre Requisitos
+      env:
+        VERSION: ""
+      run: |
+          wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          wget -qO /usr/local/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+          chmod a+x /usr/local/bin/yq
+          chmod a+x /usr/local/bin/jq
+          yq --version
+          jq --version
+          
+    - name: Build Package Helm
+      run: |
+        cat boundary/Chart.yaml
+        cat boundary/values.yaml
+        helm package boundary
+        mkdir charts
+        mv *tgz charts/
+        ls -la charts/
+        CHART=`ls charts`
+        echo "chart=$CHART" >> $GITHUB_ENV
+
+    # - name: Publish Helm Charts
+    #   uses: dmnemec/copy_file_to_another_repo_action@main
+    #   env:
+    #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+
+    #   with:
+    #      source_file: "charts/${{ env.chart }}"
+    #      destination_repo: 'vfipaas/public-charts'
+    #      destination_folder: 'charts'
+    #      destination_branch: 'gh-pages'
+    #      user_email: '${{ secrets.GIT_EMAIL }}'
+    #      user_name: ${{ secrets.GIT_USER }}'
+    #      commit_message: 'Commit via Pipeline Devportal'
