@@ -35,28 +35,29 @@ jobs:
 
     - name: Update Helm repo index
       run: |
-        helm repo index .deploy --url https://vertigobr.github.io/charts/
+        wget https://vertigobr.github.io/charts/index.yaml -O .deploy/index.yaml
+        helm repo index .deploy --url https://vertigobr.github.io/charts/ --merge .deploy/index.yaml
         ls -la .deploy/
         cat .deploy/index.yaml
 
     # depends on token
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@4.1.0
-      with:
-        branch: gh-pages
-        folder: .deploy
-        repository-name: vertigobr/charts
-        token: ${{ secrets.chart_token }}
-    # - name: Publish Helm Charts
-    #   uses: dmnemec/copy_file_to_another_repo_action@main
-    #   env:
-    #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-
+    # - name: Deploy to GitHub Pages
+    #   uses: JamesIves/github-pages-deploy-action@4.1.0
     #   with:
-    #      source_file: "charts/${{ env.chart }}"
-    #      destination_repo: 'vfipaas/public-charts'
-    #      destination_folder: 'charts'
-    #      destination_branch: 'gh-pages'
-    #      user_email: '${{ secrets.GIT_EMAIL }}'
-    #      user_name: ${{ secrets.GIT_USER }}'
-    #      commit_message: 'Commit via Pipeline Devportal'
+    #     branch: gh-pages
+    #     folder: .deploy
+    #     repository-name: vertigobr/charts
+    #     token: ${{ secrets.chart_token }}
+
+    - name: Publish Helm Charts
+      uses: dmnemec/copy_file_to_another_repo_action@main
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.chart_token }}
+      with:
+         source_file: ".deploy/*"
+         destination_repo: 'vertigobr/charts'
+         destination_folder: '/'
+         destination_branch: 'gh-pages'
+         user_email: "andre@vertigo.com.br"
+         user_name: andrevtg'
+         commit_message: 'Chart release ${{ env.chart }}'
