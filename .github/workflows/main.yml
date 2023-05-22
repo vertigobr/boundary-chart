@@ -39,11 +39,14 @@ jobs:
         ls -la .deploy/
         cat .deploy/index.yaml
 
+    # depends on token
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@4.1.0
       with:
         branch: gh-pages
-        folder: .deploy        
+        folder: .deploy
+        repository-name: vertigobr/charts
+        token: ${{ secrets.chart_token }}
     # - name: Publish Helm Charts
     #   uses: dmnemec/copy_file_to_another_repo_action@main
     #   env:
