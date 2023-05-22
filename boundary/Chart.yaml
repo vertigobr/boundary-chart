@@ -5,7 +5,7 @@ description: Hashicorp Boundary Helm chart
 type: application
 
 # This is the chart version.
-version: 0.1.2
+version: 0.1.0
 
 # Tip: use Boundary version
 appVersion: "0.12.2"
