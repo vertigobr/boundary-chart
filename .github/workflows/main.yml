@@ -54,6 +54,19 @@ jobs:
       env:
         API_TOKEN_GITHUB: ${{ secrets.chart_token }}
       with:
+        source_file: ".deploy/index.yaml"
+        destination_repo: 'vertigobr/charts'
+        destination_folder: '/'
+        destination_branch: 'gh-pages'
+        user_email: "andre@vertigo.com.br"
+        user_name: andrevtg'
+        commit_message: 'Chart release ${{ env.chart }}'
+
+    - name: Publish Helm Charts
+      uses: dmnemec/copy_file_to_another_repo_action@main
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.chart_token }}
+      with:
          source_file: ".deploy/${{ env.chart }}"
          destination_repo: 'vertigobr/charts'
          destination_folder: '/'
