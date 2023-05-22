@@ -54,7 +54,7 @@ jobs:
       env:
         API_TOKEN_GITHUB: ${{ secrets.chart_token }}
       with:
-         source_file: ".deploy/*"
+         source_file: ".deploy/${{ env.chart }}"
          destination_repo: 'vertigobr/charts'
          destination_folder: '/'
          destination_branch: 'gh-pages'
